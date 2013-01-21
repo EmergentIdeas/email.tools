@@ -1,0 +1,23 @@
+<ivy-module version="2.0">
+    <info organisation="com.emergentideas" module="email_tools"/>
+    <configurations defaultconf="build" defaultconfmapping="build->*;deployment->default;test->default">
+    	<conf name="build" />
+    	<conf name="deployment" />
+    	<conf name="test" />
+    </configurations>
+    <publications>
+    	<artifact name="email_tools" type="jar" />
+    </publications>
+    <dependencies>
+    	<dependency org="com.emergentideas" name="webhandle" rev="1.0.0.4" conf="build" transitive="false" />	
+    	
+    	<!-- sends email -->
+		<dependency org="org.apache.commons" name="commons-email" rev="1.2" conf="deployment" />
+    	
+    	
+    	<!-- For testing code -->
+		<dependency org="org.mockito" name="mockito-all" rev="1.9.5-rc1" conf="test"/>
+		<dependency org="junit" name="junit" rev="4.10" conf="test" />
+    	
+    </dependencies>
+</ivy-module>
