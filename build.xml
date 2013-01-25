@@ -34,11 +34,14 @@
 	<target name="compile" depends="init" description="compile the source " >
 		
 		<ivy:cachepath pathid="ivy.cachepath.dep" conf="deployment"/>
+		<ivy:cachepath pathid="ivy.cachepath.appdep" conf="appdep"/>
 		<ivy:cachepath pathid="ivy.cachepath.build" conf="build"/>
 
 		<path id="ivy.deps">
-			<path refid="ivy.cachepath.dep" />
 			<path refid="ivy.cachepath.build" />
+			<path refid="ivy.cachepath.appdep" />
+			<path refid="ivy.cachepath.dep" />
+
 			<fileset dir="lib" >
 				<include name="*.jar"/>
 			</fileset>

@@ -3,16 +3,17 @@
     <configurations defaultconf="build" defaultconfmapping="build->*;deployment->default;test->default">
     	<conf name="build" />
     	<conf name="deployment" />
+    	<conf name="appdep" />
     	<conf name="test" />
     </configurations>
     <publications>
-    	<artifact name="email_tools" type="jar" />
+    	<artifact name="email_tools" type="jar" conf="appdep"/>
     </publications>
     <dependencies>
     	<dependency org="com.emergentideas" name="webhandle" rev="1.0.0.4" conf="build" transitive="false" />	
     	
     	<!-- sends email -->
-		<dependency org="org.apache.commons" name="commons-email" rev="1.2" conf="deployment" />
+		<dependency org="org.apache.commons" name="commons-email" rev="1.2" conf="appdep->default" />
     	
     	
     	<!-- For testing code -->
