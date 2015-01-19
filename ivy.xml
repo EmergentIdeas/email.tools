@@ -1,19 +1,29 @@
 <ivy-module version="2.0">
     <info organisation="com.emergentideas" module="email_tools"/>
+    <!--
+     include like: 
+     		<dependency org="com.emergentideas" name="email_tools" rev="latest.integration" conf="appdep" />
+    -->
     <configurations defaultconf="build" defaultconfmapping="build->*;deployment->default;test->default">
     	<conf name="build" />
     	<conf name="deployment" />
     	<conf name="appdep" />
+    	<conf name="sources" />
     	<conf name="test" />
+    	<conf name="empty" />
     </configurations>
     <publications>
     	<artifact name="email_tools" type="jar" conf="appdep"/>
+    	<artifact name="email_tools-sources" type="source" ext="jar" conf="sources"/>
     </publications>
     <dependencies>
-    	<dependency org="com.emergentideas" name="webhandle" rev="1.0.0.4" conf="build" transitive="false" />	
+        <dependency org="com.emergentideas" name="webhandle" rev="[1.0.0.19,)" conf="build" />	
+    	<!-- common utils -->
+    	<dependency org="commons-lang" name="commons-lang" rev="[2.6,)" conf="build" />
+    	<dependency org="javax.servlet" name="servlet-api" rev="2.5" conf="build"/>
     	
     	<!-- sends email -->
-		<dependency org="org.apache.commons" name="commons-email" rev="1.2" conf="appdep->default" />
+		<dependency org="org.apache.commons" name="commons-email" rev="[1.2,)" conf="appdep->default" />
     	
     	
     	<!-- For testing code -->

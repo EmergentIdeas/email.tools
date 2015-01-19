@@ -7,6 +7,7 @@
 	<property name="templates" location="templates"/>
 	<property name="resources" location="resources"/>
 	<property name="configuration" location="configuration"/>
+	<property name="lib" location="lib"/>
 	<property name="dist"  location="dist"/>
 	<property name="artifacts" location="artifacts" />
 	<property name="app.package.root" value="com/emergentideas/webhandle/apps/oak/email" />
@@ -29,6 +30,7 @@
 		<mkdir dir="${templates}" />
 		<mkdir dir="${resources}" />
 		<mkdir dir="${configuration}" />
+		<mkdir dir="${lib}" />
 	</target>
 
 	<target name="compile" depends="init" description="compile the source " >
@@ -74,12 +76,18 @@
 	
 	<target name="pub" depends="compile" >
 		<jar jarfile="${artifacts}/${organisation}-${ant.project.name}.jar" basedir="${dist}"/>
+		<zip destfile="${artifacts}/${organisation}-${ant.project.name}-sources.jar" basedir="${src}" />
 		<ivy:publish resolver="eico_local" pubrevision="1.0.0.${build.number}" update="true" overwrite="true" organisation="${organisation}">
 			<artifacts pattern="${artifacts}/[organisation]-[artifact].[ext]" />
 		</ivy:publish>
 
 	</target>
 
+	<target name="delcache">
+		<ivy:cachepath pathid="ivy.cachepath.dne" conf="empty"/>
+		<echo message="deleting cache dir: ${ivy.cache.dir}/${organisation}/${ant.project.name}"></echo>
+	  	<delete dir="${ivy.cache.dir}/${organisation}/${ant.project.name}" />
+	</target>
 
 
 	<target name="clean" description="clean up" >
