@@ -25,6 +25,7 @@
     	<!-- sends email -->
 		<dependency org="org.apache.commons" name="commons-email" rev="[1.2,)" conf="appdep->default" />
     	
+    	<dependency org="org.jsoup" name="jsoup" rev="[1.7.2,)" conf="appdep->default" />
     	
     	<!-- For testing code -->
 		<dependency org="org.mockito" name="mockito-all" rev="1.9.5-rc1" conf="test"/>

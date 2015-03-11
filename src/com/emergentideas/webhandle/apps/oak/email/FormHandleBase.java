@@ -1,6 +1,10 @@
 package com.emergentideas.webhandle.apps.oak.email;
 
 import javax.annotation.Resource;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import com.emergentideas.webhandle.Location;
 import com.emergentideas.webhandle.WebAppLocation;
 import com.emergentideas.webhandle.assumptions.oak.interfaces.EmailService;
@@ -20,7 +24,7 @@ public class FormHandleBase {
 	
 	protected Object sendContact(Location location, Object submission) {
 		String email = createEmail(getEmailTemplateName(location, submission), location, submission);
-		
+		email = clean(email);
 		String userFrom = extractUserFrom(location, submission);
 		if(userFrom == null) {
 			userFrom = getFrom(location, submission);
@@ -33,6 +37,10 @@ public class FormHandleBase {
 		}
 		
 		return getResponseTemplateName(location, submission);
+	}
+	
+	protected String clean(String email) {
+		return Jsoup.clean(email, Whitelist.relaxed());
 	}
 	
 	protected String createEmail(String templateName, Location requestLocation, Object submission) {

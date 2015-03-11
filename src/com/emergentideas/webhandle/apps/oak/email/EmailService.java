@@ -1,5 +1,7 @@
 package com.emergentideas.webhandle.apps.oak.email;
 
+import java.util.Map;
+
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
@@ -18,6 +20,32 @@ public class EmailService implements
 	
 	protected Logger log = SystemOutLogger.get(EmailService.class);
 	
+	public boolean sendEmail(String[] to, String from, String[] cc, String[] bcc,
+			String subject, String textContent, String htmlContent, Map<String, String> headers) {
+		
+		try {
+			HtmlEmail email = createEmailWithConnectionInfo(to, bcc, from, subject);
+			if(htmlContent != null) {
+				email.setHtmlMsg(htmlContent);
+			}
+			if(textContent != null) {
+				email.setTextMsg(textContent);
+			}
+			
+			if(headers != null) {
+				for(String key : headers.keySet()) {
+					email.addHeader(key, headers.get(key));
+				}
+			}
+			
+			email.send();
+			return true;
+		}
+		catch(EmailException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public boolean sendEmail(String[] to, String from, String[] cc, String[] bcc,
 			String subject, String textContent, String htmlContent) {
 		
