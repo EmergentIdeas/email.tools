@@ -9,6 +9,7 @@
 	<property name="configuration" location="configuration"/>
 	<property name="lib" location="lib"/>
 	<property name="dist"  location="dist"/>
+	<property name="javabin"  location="javabin"/>
 	<property name="artifacts" location="artifacts" />
 	<property name="app.package.root" value="com/emergentideas/webhandle/apps/oak/email" />
 	<property name="organisation" value="com.emergentideas" />
@@ -28,6 +29,7 @@
 		<mkdir dir="${dist}" />
 		<mkdir dir="${artifacts}" />
 		<mkdir dir="${templates}" />
+		<mkdir dir="${javabin}" />
 		<mkdir dir="${resources}" />
 		<mkdir dir="${configuration}" />
 		<mkdir dir="${lib}" />
@@ -60,6 +62,12 @@
 			</fileset>
 		</copy>
 		
+		<!-- copy the compiled files to javabin so we can zip these on their own -->
+		<copy todir="${javabin}">
+			<fileset dir="${dist}">
+			</fileset>
+		</copy>
+		
 		<copy todir="${dist}/${app.package.root}/templates">
 			<fileset dir="${templates}" >
 			</fileset>
@@ -73,13 +81,22 @@
 			</fileset>
 		</copy>
 	</target>
-	
-	<target name="pub" depends="compile" >
+	<target name="createArtifacts">
 		<jar jarfile="${artifacts}/${organisation}-${ant.project.name}.jar" basedir="${dist}"/>
-		<zip destfile="${artifacts}/${organisation}-${ant.project.name}-sources.jar" basedir="${src}" />
+		<zip destfile="${artifacts}/${organisation}-${ant.project.name}-javabin-sources.jar" basedir="${src}" />
+		<jar jarfile="${artifacts}/${organisation}-${ant.project.name}-javabin.jar" basedir="${javabin}" />
+		<zip whenempty="create" destfile="${artifacts}/${organisation}-${ant.project.name}-resources.zip" basedir="${resources}" />
+		<zip whenempty="create" destfile="${artifacts}/${organisation}-${ant.project.name}-templates.zip" basedir="${templates}" />
+		<zip whenempty="create" destfile="${artifacts}/${organisation}-${ant.project.name}-configuration.zip" basedir="${configuration}" />
+	</target>
+	<target name="doPub">
 		<ivy:publish resolver="eico_local" pubrevision="1.0.0.${build.number}" update="true" overwrite="true" organisation="${organisation}">
 			<artifacts pattern="${artifacts}/[organisation]-[artifact].[ext]" />
 		</ivy:publish>
+	</target>
+	<target name="pub" depends="clean,delcache,compile,createArtifacts,doPub" >
+
+		
 
 	</target>
 

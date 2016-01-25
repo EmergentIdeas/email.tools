@@ -11,10 +11,19 @@
     	<conf name="sources" />
     	<conf name="test" />
     	<conf name="empty" />
+		<conf name="javabin" />
+		<conf name="resources" />
+		<conf name="templates" />
+		<conf name="configuration" />
+		<conf name="deps" />
     </configurations>
     <publications>
     	<artifact name="email_tools" type="jar" conf="appdep"/>
-    	<artifact name="email_tools-sources" type="source" ext="jar" conf="sources"/>
+		<artifact name="email_tools-javabin" type="jar" conf="javabin" />
+    	<artifact name="email_tools-javabin-sources" type="source" ext="jar" conf="sources"/>
+		<artifact name="email_tools-resources" type="zip" conf="resources" />
+		<artifact name="email_tools-templates" type="zip" conf="templates" />
+		<artifact name="email_tools-configuration" type="zip" conf="configuration" />
     </publications>
     <dependencies>
         <dependency org="com.emergentideas" name="webhandle" rev="[1.0.0.19,)" conf="build" />	
@@ -24,8 +33,9 @@
     	
     	<!-- sends email -->
 		<dependency org="org.apache.commons" name="commons-email" rev="[1.2,)" conf="appdep->default" />
-    	
     	<dependency org="org.jsoup" name="jsoup" rev="[1.7.2,)" conf="appdep->default" />
+		<dependency org="org.apache.commons" name="commons-email" rev="[1.2,)" conf="deps->default" />
+    	<dependency org="org.jsoup" name="jsoup" rev="[1.7.2,)" conf="deps->default" />
     	
     	<!-- For testing code -->
 		<dependency org="org.mockito" name="mockito-all" rev="1.9.5-rc1" conf="test"/>
