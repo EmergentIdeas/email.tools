@@ -17,7 +17,16 @@ public class EmailService implements
 	protected int port;
 	protected String user;
 	protected String pass;
+	protected boolean startTLSEnabled = true;
 	
+	public boolean isStartTLSEnabled() {
+		return startTLSEnabled;
+	}
+
+	public void setStartTLSEnabled(boolean startTLSEnabled) {
+		this.startTLSEnabled = startTLSEnabled;
+	}
+
 	protected Logger log = SystemOutLogger.get(EmailService.class);
 	
 	public boolean sendEmail(String[] to, String from, String[] cc, String[] bcc,
@@ -73,6 +82,7 @@ public class EmailService implements
 		email.setHostName(host);
 		email.setSmtpPort(port);
 		email.setAuthentication(user, pass);
+		email.setStartTLSEnabled(isStartTLSEnabled());
 		
 		if(to != null && to.length > 0) {
 			for(String s : to) {
