@@ -18,15 +18,8 @@ public class EmailService implements
 	protected String user;
 	protected String pass;
 	protected boolean startTLSEnabled = true;
+	protected boolean lockFromUser = true;
 	
-	public boolean isStartTLSEnabled() {
-		return startTLSEnabled;
-	}
-
-	public void setStartTLSEnabled(boolean startTLSEnabled) {
-		this.startTLSEnabled = startTLSEnabled;
-	}
-
 	protected Logger log = SystemOutLogger.get(EmailService.class);
 	
 	public boolean sendEmail(String[] to, String from, String[] cc, String[] bcc,
@@ -77,12 +70,20 @@ public class EmailService implements
 
 	protected HtmlEmail createEmailWithConnectionInfo(String[] to, String[] bcc,
 			String from, String subject) throws EmailException {
-		
+		if(lockFromUser) {
+			from = "\"Web Server\" <" + user + ">";
+		}
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName(host);
 		email.setSmtpPort(port);
 		email.setAuthentication(user, pass);
-		email.setStartTLSEnabled(isStartTLSEnabled());
+		
+		try {
+			email.setStartTLSEnabled(isStartTLSEnabled());
+		}
+		catch(Throwable e) {
+			email.setTLS(isStartTLSEnabled());
+		}
 		
 		if(to != null && to.length > 0) {
 			for(String s : to) {
@@ -133,5 +134,27 @@ public class EmailService implements
 		this.pass = pass;
 	}
 	
+	public boolean isStartTLSEnabled() {
+		return startTLSEnabled;
+	}
 
+	public boolean getStartTLSEnabled() {
+		return startTLSEnabled;
+	}
+
+	public void setStartTLSEnabled(boolean startTLSEnabled) {
+		this.startTLSEnabled = startTLSEnabled;
+	}
+	
+	public boolean isLockFromUser() {
+		return lockFromUser;
+	}
+	
+	public boolean getLockFromUser() {
+		return lockFromUser;
+	}
+	
+	public void setLockFromUser(boolean lockFromUser) {
+		this.lockFromUser = lockFromUser;
+	}
 }
